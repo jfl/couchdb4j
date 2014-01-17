@@ -394,6 +394,20 @@ public class Database {
 		}
 		
 	}
+  
+  	public boolean deleteAttachment(Document d, String fname) throws IOException {
+
+	    CouchResponse resp = session.delete(name + "/" + urlEncodePath(d.getId()) + "/" + fname + "?rev=" + d.getRev());
+
+	    if (resp.isOk()) {
+	      return true;
+	    }
+	    else {
+	      log.warn("Error deleting attachment - "+resp.getErrorId()+" "+resp.getErrorReason());
+				return false;
+			}
+			
+		}
 	
   /**
    * Gets attachment
