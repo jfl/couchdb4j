@@ -47,6 +47,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.params.AllClientPNames;
 import org.apache.http.client.params.ClientPNames;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
@@ -382,17 +383,14 @@ public class Session {
 	/**
 	 * Overloaded Put using by attachments
 	 */
-	CouchResponse put(String url, String ctype, String content) {
+	CouchResponse put(String url, String ctype, byte[] content) {
 		HttpPut put = new HttpPut(buildUrl(url));
 		if (content!=null) {
 			HttpEntity entity;
-			try {
-				entity = new StringEntity(content, DEFAULT_CHARSET);
+				entity = new ByteArrayEntity(content);
 				put.setEntity(entity);
 				put.setHeader(new BasicHeader("Content-Type", ctype));
-			} catch (UnsupportedEncodingException e) {
-				log.error(ExceptionUtils.getStackTrace(e));
-			}
+			
 		}
 		return http(put);
 	}

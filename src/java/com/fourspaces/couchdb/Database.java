@@ -416,10 +416,12 @@ public class Database {
    * @param attachment attachment body
    * @return was the PUT successful?
    */
-    public String putAttachment(String id, String fname, String ctype, String attachment) throws IOException {
-        CouchResponse resp = session.put(name + "/" + urlEncodePath(id) + "/" + fname, ctype, attachment);
+    public String putAttachment(Document d, String fname, String ctype, byte[] attachment) throws IOException {
+        CouchResponse resp = session.put(name + "/" + urlEncodePath(d.getId()) + "/" + fname + "?rev=" + d.getRev(), ctype, attachment);
         return resp.getBody();
     }
+    
+    
     
   /**
    * Update an existing document using a document update handler. Returns false if there is a failure
